@@ -15,9 +15,12 @@ export const App = () => {
 
 	return (
 		<div className='tasks'>
-			<ul className='tasks__list'>
-				{tasks.map(({id, title}) => <li className='tasks__item' key={id}>{title}</li>)}
-			</ul>
+			<div className="tasks__container">
+				<h1 className='tasks__title'>Список задач</h1>
+				<ul className='tasks__list'>
+					{tasks.map(({id, title}) => <li className='tasks__item' key={id}>{id}. {title}</li>)}
+				</ul>
+			</div>
 		</div>
 	);
 };
