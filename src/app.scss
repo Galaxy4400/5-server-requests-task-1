@@ -9,6 +9,25 @@ body {
 	background: var(--color-main);
 }
 
+.button {
+	background: var(--color-main);
+	color: #fff;
+	padding: 5px 15px;
+	border-radius: 5px;
+	transition: all 0.3s ease 0s;
+
+	&:disabled {
+		background: var(--color-gray);
+		pointer-events: none;
+	}
+
+	@media (any-hover: hover) {
+		&:hover {
+			filter: brightness(1.5);
+		}
+	}
+}
+
 .input {
 	border: 1px solid var(--color-main);
 	border-radius: 5px;
@@ -35,22 +54,6 @@ body {
 	}
 	// .tasks-form__button
 	&__button {
-		background: var(--color-main);
-		color: #fff;
-		padding: 5px 15px;
-		border-radius: 5px;
-		transition: all 0.3s ease 0s;
-
-		&:disabled {
-			background: var(--color-gray);
-			pointer-events: none;
-		}
-
-		@media (any-hover: hover) {
-			&:hover {
-				filter: brightness(1.5);
-			}
-		}
 	}
 }
 
@@ -72,6 +75,9 @@ body {
 	// .tasks-container__title
 	&__title {
 		font-size: 30px;
+	}
+	// .tasks-container__sort
+	&__sort {
 	}
 	// .tasks-container__search
 	&__search {
