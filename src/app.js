@@ -5,18 +5,20 @@ const TASKS_RESORURSE = 'http://localhost:3005/tasks/';
 
 export const App = () => {
 	const [tasks, setTasks] = useState([]);
-	const [searchString, setSearchString] = useState('');
 	const [refreshTasksFlag, setRefreshTasksFlag] = useState(false);
+
 
 	function refreshTasks() {
 		setRefreshTasksFlag(!refreshTasksFlag);
 	}
+
 
 	useEffect(() => {
 		fetch(TASKS_RESORURSE)
 			.then((response) => response.json())
 			.then(setTasks);
 	}, [refreshTasksFlag]);
+
 
 	function createHandler(event) {
 		event.preventDefault();
@@ -34,11 +36,13 @@ export const App = () => {
 		});
 	}
 
+
 	function removeHandler(taskId) {
 		fetch(TASKS_RESORURSE + taskId, { method: 'DELETE' }).then(() => {
 			refreshTasks();
 		});
 	}
+
 
 	function patchHandler(input, taskId) {
 		fetch(TASKS_RESORURSE + taskId, {
@@ -50,16 +54,19 @@ export const App = () => {
 		});
 	}
 
+
+	function searchHandler(value) {
+		fetch(TASKS_RESORURSE + `?title_like=${value}`)
+			.then((response) => response.json())
+			.then(setTasks);
+	}
+
+
 	function changeTask(input, id) {
 		const changingTasks = tasks.map((task) => (task.id === id ? { ...task, title: input.value } : task));
 		setTasks(changingTasks);
 	}
 
-	function isSearched(title) {
-		if (!searchString) return true;
-
-		return title.includes(searchString);
-	}
 
 	return (
 		<div className="tasks">
@@ -76,30 +83,27 @@ export const App = () => {
 						className="tasks-container__search input"
 						type="text"
 						placeholder="Поиск..."
-						value={searchString}
-						onChange={({ target }) => setSearchString(target.value)}
+						onChange={({ target }) => searchHandler(target.value)}
 					/>
 				</div>
 				<ul className="tasks-list">
-					{tasks.map(({ id, title }) =>
-						isSearched(title) ? (
-							<li className="tasks-list__item" key={id}>
-								<div className="tasks-list__title">
-									<span>{id}.</span>
-									<input
-										className="tasks-list__input"
-										type="text"
-										value={title}
-										onChange={({ target }) => changeTask(target, id)}
-										onBlur={({ target }) => patchHandler(target, id)}
-									/>
-								</div>
-								<button className="tasks-list__remove" onClick={() => removeHandler(id)}>
-									Удалить
-								</button>
-							</li>
-						) : null,
-					)}
+					{tasks.map(({ id, title }) => (
+						<li className="tasks-list__item" key={id}>
+							<div className="tasks-list__title">
+								<span>{id}.</span>
+								<input
+									className="tasks-list__input"
+									type="text"
+									value={title}
+									onChange={({ target }) => changeTask(target, id)}
+									onBlur={({ target }) => patchHandler(target, id)}
+								/>
+							</div>
+							<button className="tasks-list__remove" onClick={() => removeHandler(id)}>
+								Удалить
+							</button>
+						</li>
+					))}
 				</ul>
 			</div>
 		</div>
