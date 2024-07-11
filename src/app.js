@@ -34,8 +34,7 @@ export const App = () => {
 						onChange={({ target }) => setSearchTerm(target.value)}
 					/>
 				</div>
-				{isSearching && <div>Поиск...</div>}
-				<TasksList {...{ tasks, setTasks, refreshTasks, isLoading }} />
+				<TasksList {...{ tasks, setTasks, refreshTasks, isLoading, isSearching }} />
 			</div>
 		</div>
 	);
