@@ -1,6 +1,6 @@
 html {
 	--color-main: #232532;
-	--color-green: #dfffe6;
+	--color-gray: #828282;
 	--color-red: red;
 }
 
@@ -40,6 +40,12 @@ body {
 		padding: 5px 15px;
 		border-radius: 5px;
 		transition: all 0.3s ease 0s;
+
+		&:disabled {
+			background: var(--color-gray);
+			pointer-events: none;
+		}
+
 		@media (any-hover: hover) {
 			&:hover {
 				filter: brightness(1.5);
@@ -101,5 +107,9 @@ body {
 	// .tasks-list__remove
 	&__remove {
 		color: var(--color-red);
+		&:disabled {
+			color: var(--color-gray);
+			pointer-events: none;
+		}
 	}
 }
