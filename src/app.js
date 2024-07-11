@@ -1,7 +1,7 @@
 import './app.scss';
 import { useEffect, useState } from 'react';
 
-const TASKS_RESORURSE = 'http://localhost:3005/tasks/';
+const TASKS_RESORURSE = 'http://localhost:3005/tasks';
 
 export const App = () => {
 	const [tasks, setTasks] = useState([]);
@@ -38,14 +38,14 @@ export const App = () => {
 
 
 	function removeHandler(taskId) {
-		fetch(TASKS_RESORURSE + taskId, { method: 'DELETE' }).then(() => {
+		fetch(`${TASKS_RESORURSE}/${taskId}`, { method: 'DELETE' }).then(() => {
 			refreshTasks();
 		});
 	}
 
 
 	function patchHandler(input, taskId) {
-		fetch(TASKS_RESORURSE + taskId, {
+		fetch(`${TASKS_RESORURSE}/${taskId}`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json;charset=utf-8' },
 			body: JSON.stringify({ title: input.value }),
@@ -56,7 +56,7 @@ export const App = () => {
 
 
 	function searchHandler(value) {
-		fetch(TASKS_RESORURSE + `?title_like=${value}`)
+		fetch(`${TASKS_RESORURSE}?title_like=${value}`)
 			.then((response) => response.json())
 			.then(setTasks);
 	}
