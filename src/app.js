@@ -17,9 +17,7 @@ export const App = () => {
 		<div className="tasks">
 			<form className="tasks-form" onSubmit={createHandler}>
 				<input className="tasks-form__input input" name="title" type="text" />
-				<button className="tasks-form__button button" type="submit" disabled={isCreating}>
-					{'Добавить новую задачу'}
-				</button>
+				<button className="tasks-form__button button" type="submit" disabled={isCreating}>Добавить новую задачу</button>
 			</form>
 			<div className="tasks-container">
 				<div className="tasks-container__header">
