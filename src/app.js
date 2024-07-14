@@ -1,14 +1,14 @@
 import './app.scss';
 import { useState } from 'react';
-import { useCreateTask, useGetTasks, useSearchTasks } from './hooks';
+import { useCreateTask, useGetTasks } from './hooks';
 import { TasksList } from './components/tasks-list';
 
 export const App = () => {
 	const [isSorting, setIsSorting] = useState(false);
+	const [searchTerm, setSearchTerm] = useState('');
 
 	const { tasks, setTasks, isLoading } = useGetTasks(isSorting);
 	const { createHandler, isCreating } = useCreateTask();
-	const { setSearchTerm, isSearching } = useSearchTasks(setTasks, isSorting);
 
 	return (
 		<div className="tasks">
@@ -29,7 +29,7 @@ export const App = () => {
 						onChange={({ target }) => setSearchTerm(target.value)}
 					/>
 				</div>
-				<TasksList {...{ tasks, setTasks, isLoading, isSearching }} />
+				<TasksList {...{ tasks, setTasks, isLoading, searchTerm }} />
 			</div>
 		</div>
 	);

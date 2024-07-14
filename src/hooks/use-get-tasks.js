@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { onValue, orderByChild, query, ref } from "firebase/database";
-import { db } from "../firebase";
-import { formatFirebaseData } from "../helpers";
-
+import { useEffect, useState } from 'react';
+import { onValue, orderByChild, query, ref } from 'firebase/database';
+import { db } from '../firebase';
+import { formatFirebaseData } from '../helpers';
 
 export const useGetTasks = (isSorting) => {
 	const [tasks, setTasks] = useState([]);
@@ -15,14 +14,12 @@ export const useGetTasks = (isSorting) => {
 			tasksDbRef = query(tasksDbRef, orderByChild('title'));
 		}
 
-		const unsubscribe = onValue(tasksDbRef, (snapshot) => {
+		return onValue(tasksDbRef, (snapshot) => {
 			const tasks = formatFirebaseData(snapshot);
 
 			setTasks(tasks);
 			setIsLoading(false);
 		});
-
-		return () => unsubscribe();
 	}, [isSorting]);
 
 	return { tasks, setTasks, isLoading };
