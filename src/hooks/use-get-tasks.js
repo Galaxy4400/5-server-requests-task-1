@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
-import { TASKS_RESORURSE } from "../constants/tasks-resourse";
+import { onValue, orderByChild, query, ref } from "firebase/database";
+import { db } from "../firebase";
+import { formatFirebaseData } from "../helpers";
 
-export const useGetTasks = (refreshTasksFlag, isSorting) => {
+
+export const useGetTasks = (isSorting) => {
 	const [tasks, setTasks] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		setIsLoading(true);
+		let tasksDbRef = ref(db, 'tasks');
 
-		fetch(`${TASKS_RESORURSE}${isSorting ? '?_sort=title' : ''}`)
-			.then((response) => response.json())
-			.then(setTasks)
-			.finally(() => {
-				setIsLoading(false);
-			});
-	}, [refreshTasksFlag, isSorting]);
+		if (isSorting) {
+			tasksDbRef = query(tasksDbRef, orderByChild('title'));
+		}
+
+		const unsubscribe = onValue(tasksDbRef, (snapshot) => {
+			const tasks = formatFirebaseData(snapshot);
+
+			setTasks(tasks);
+			setIsLoading(false);
+		});
+
+		return () => unsubscribe();
+	}, [isSorting]);
 
 	return { tasks, setTasks, isLoading };
 };

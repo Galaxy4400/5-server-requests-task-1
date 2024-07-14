@@ -1,14 +1,14 @@
 import { changeTask } from '../helpers';
 import { useDeleteTask, useUpdateTask } from '../hooks';
 
-export const TaskItem = ({ id, title, tasks, setTasks, refreshTasks }) => {
-	const { removeHandler, isDeleting } = useDeleteTask(refreshTasks);
-	const { updateHandler, isUpdating } = useUpdateTask(refreshTasks);
+export const TaskItem = ({ id, index, title, tasks, setTasks }) => {
+	const { removeHandler, isDeleting } = useDeleteTask();
+	const { updateHandler, isUpdating } = useUpdateTask();
 
 	return (
-		<li className="tasks-list__item" key={id}>
+		<li className="tasks-list__item">
 			<div className="tasks-list__title">
-				<span>{id}.</span>
+				<span>{index+1}.</span>
 				<input
 					className="tasks-list__input"
 					type="text"

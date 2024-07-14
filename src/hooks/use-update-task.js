@@ -1,20 +1,16 @@
-import { useState } from "react";
-import { TASKS_RESORURSE } from "../constants/tasks-resourse";
+import { useState } from 'react';
+import { ref, set } from 'firebase/database';
+import { db } from '../firebase';
 
-export const useUpdateTask = (refreshTasks) => {
+export const useUpdateTask = () => {
 	const [isUpdating, setIsUpdating] = useState(false);
 
 	const updateHandler = (taskId, input) => {
 		setIsUpdating(true);
 
-		fetch(`${TASKS_RESORURSE}/${taskId}`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({ title: input.value }),
-		}).then(() => {
-			refreshTasks();
-		})
-		.finally(() => {
+		const updatingTaskDbRef = ref(db, `tasks/${taskId}`);
+
+		set(updatingTaskDbRef, { title: input.value }).finally(() => {
 			setIsUpdating(false);
 		});
 	};

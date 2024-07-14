@@ -1,22 +1,19 @@
-import { useState } from "react";
-import { TASKS_RESORURSE } from "../constants/tasks-resourse";
+import { useState } from 'react';
+import { ref, remove } from 'firebase/database';
+import { db } from '../firebase';
 
-
-export const useDeleteTask = (refreshTasks) => {
+export const useDeleteTask = () => {
 	const [isDeleting, setIsDeleting] = useState(false);
 
 	const removeHandler = (taskId) => {
 		setIsDeleting(true);
 
-		fetch(`${TASKS_RESORURSE}/${taskId}`, {
-			method: 'DELETE'
-		}).then(() => {
-			refreshTasks();
-		})
-		.finally(() => {
+		const delitingTaskDbRef = ref(db, `tasks/${taskId}`);
+
+		remove(delitingTaskDbRef).finally(() => {
 			setIsDeleting(false);
 		});
-	}
+	};
 
 	return { removeHandler, isDeleting };
 };

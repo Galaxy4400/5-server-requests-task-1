@@ -4,14 +4,11 @@ import { useCreateTask, useGetTasks, useSearchTasks } from './hooks';
 import { TasksList } from './components/tasks-list';
 
 export const App = () => {
-	const [refreshTasksFlag, setRefreshTasksFlag] = useState(false);
 	const [isSorting, setIsSorting] = useState(false);
 
-	const refreshTasks = () => setRefreshTasksFlag(!refreshTasksFlag);
-
-	const { tasks, setTasks, isLoading } = useGetTasks(refreshTasksFlag, isSorting);
-	const { createHandler, isCreating } = useCreateTask(refreshTasks);
-	const { setSearchTerm, isSearching } = useSearchTasks(setTasks, refreshTasks, isSorting);
+	const { tasks, setTasks, isLoading } = useGetTasks(isSorting);
+	const { createHandler, isCreating } = useCreateTask();
+	const { setSearchTerm, isSearching } = useSearchTasks(setTasks, isSorting);
 
 	return (
 		<div className="tasks">
@@ -32,7 +29,7 @@ export const App = () => {
 						onChange={({ target }) => setSearchTerm(target.value)}
 					/>
 				</div>
-				<TasksList {...{ tasks, setTasks, refreshTasks, isLoading, isSearching }} />
+				<TasksList {...{ tasks, setTasks, isLoading, isSearching }} />
 			</div>
 		</div>
 	);

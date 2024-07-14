@@ -1,28 +1,27 @@
-import { useState } from "react";
-import { TASKS_RESORURSE } from "../constants/tasks-resourse";
+import { useState } from 'react';
+import { push, ref } from 'firebase/database';
+import { db } from '../firebase';
 
-export const useCreateTask = (refreshTasks) => {
+export const useCreateTask = () => {
 	const [isCreating, setIsCreating] = useState(false);
 
 	const createHandler = (event) => {
 		event.preventDefault();
+
+		const tasksDbRef = ref(db, 'tasks');
 
 		const $form = event.target;
 		const formData = new FormData($form);
 
 		setIsCreating(true);
 
-		fetch(TASKS_RESORURSE, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify(Object.fromEntries(formData.entries())),
-		}).then(() => {
-			refreshTasks();
-			$form.reset();
-		})
-		.finally(() => {
-			setIsCreating(false);
-		});
+		push(tasksDbRef, Object.fromEntries(formData.entries()))
+			.then(() => {
+				$form.reset();
+			})
+			.finally(() => {
+				setIsCreating(false);
+			});
 	};
 
 	return { createHandler, isCreating };
